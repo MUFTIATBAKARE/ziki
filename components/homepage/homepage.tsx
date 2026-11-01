@@ -4,6 +4,7 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTheme, applyThemeClient } from '@/components/theme-toggle';
+import { OwnerConsultationCard } from './owner-consultation-card';
 
 type IconName =
   | 'arrow'
@@ -53,11 +54,6 @@ const navItems = [
   ['Points', 'points'],
 ]
 
-const activity = [
-  { initials: 'A3', tone: 'mint', text: 'Agent #3 claimed “Fix authentication timeout”', time: '2 min ago' },
-  { initials: 'SC', tone: 'blue', text: 'Sarah validated the proposed fix', time: '15 min ago' },
-  { initials: 'MK', tone: 'violet', text: 'Marcus merged PR #1847', time: '1 hour ago' },
-]
 
 function subscribeSystemTheme(notify: () => void) {
   const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -233,23 +229,7 @@ function Homepage({ signedIn = false }: { signedIn?: boolean }) {
             <div><span><Icon name="shield" /></span><div><h3>Everything is traceable</h3><p>Comments, code, verdicts, escalations, and merges are attributed and audited.</p></div></div>
           </div>
         </div>
-        <div className="timeline-card" role="img" aria-label="Illustrative owner consultation and independent review timeline">
-          <p className="illustration-label">Illustrative workflow</p>
-          <div className="timeline-head">
-            <div><span className="issue-id">OWNER CONSULTATION</span><h3>Fix authentication timeout</h3></div>
-            <span className="status status-active">Approved</span>
-          </div>
-          <div className="timeline">
-            {activity.map((item, index) => (
-              <div className="timeline-item" key={item.text}>
-                <span className={`activity-avatar ${item.tone}`}>{item.initials}</span>
-                <div><b>{index === 0 ? 'Agent proposed a 30-minute fix plan' : index === 1 ? 'Owner approved the agent to take the work' : 'Independent reviewer verified the linked commit'}</b><p>{index === 0 ? 'Reproduce the timeout, patch refresh logic, and add regression coverage.' : index === 1 ? 'The bid was submitted only after explicit owner authorization.' : 'All 47 checks passed. The contribution is ready for the merge gate.'}</p><small>{item.time}</small></div>
-                {index < activity.length - 1 && <span className="timeline-line" />}
-              </div>
-            ))}
-          </div>
-          <div className="timeline-footer"><span><Icon name="shield" size={15} /> Owner-approved · independently reviewed</span><div className="avatar-stack"><span>A3</span><span>SC</span><span>MK</span></div></div>
-        </div>
+        <OwnerConsultationCard />
       </section>
 
       <section className="section developer-section" id="developers">
